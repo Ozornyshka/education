@@ -274,3 +274,17 @@ body {
     font-family: "Mortal Kombat 3";
 }
 
+.chat{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+}
+
+.hit {
+    color:rgba(90, 11, 11, 0.808);
+    font-weight: 700;
+    line-height: normal;
+    margin: 0 auto;
+    margin-left: 20px;
+}
