@@ -1,5 +1,6 @@
 const arenas = document.querySelector('.arenas')
 const $randomButton = document.querySelector(".button")
+const $chat = document.querySelector('.chat')
 
 function Player(player,name,hp,img,weapon){
   this.player = player
@@ -45,35 +46,48 @@ character.appendChild(img)
 return playerdiv
 }
 
-function randomDamage(){
-  return Math.ceil(Math.random() * 20);
+function changeHp(player1,player2){
+  const $playerLife = document.querySelectorAll('.life')
+  player1.hp -= randomDamage(player1)
+  player2.hp -= randomDamage(player2)
+ if (player1.hp === 0 && player2.hp === 0){
+  arenas.appendChild(playerWin(true))
+      } else if (player2.hp <= 0){
+        player2.hp = 0
+        arenas.appendChild(playerWin(player1.name))
+      } else if (player1.hp <= 0){
+        player1.hp = 0
+        arenas.appendChild(playerWin(player2.name))
+      }
+$playerLife[0].style.width = player1.hp + "%";
+$playerLife[1].style.width = player2.hp + "%";
 }
 
-function changeHp(player){
-  const $playerLife = document.querySelectorAll('.life')
-  player[0].hp -= randomDamage()
-  player[1].hp -= randomDamage()
+function randomDamage(name){
+  hit = Math.ceil(Math.random() * 20);
+damage(name,hit)
+  return hit
+}
 
-  for (let i = 0; i < player.length; i++) {
-    if (player[i].hp <= 0 ){
-        player[i].hp = 0
-      } else if (player[i].hp > 0){
-        arenas.appendChild(playerWin(player[i].name))
-      }
-      console.log(player[i].hp);
-      $playerLife[i].style.width = player[i].hp + "%";
-  }
+function damage(name,hit){
+  let $hit = createElement('p','hit')
+  $hit.innerText = `Игрок ${name.name} получил ${hit} урон, у него осталось ${name.hp - hit }` 
+  $chat.appendChild($hit)
 }
 
 function playerWin(name){
   const $loseTitle = createElement('div', 'loseTitle')
-  $loseTitle.innerText = name + "wins"
-
+  if(name == true){
+    $loseTitle.innerText = 'Games in a draw'
+  } else{
+    $loseTitle.innerText = name + " wins"
+  }
+  $randomButton.disabled = true
   return $loseTitle
 }
 
 $randomButton.addEventListener("click", function(){
- changeHp([scorpion,sonya])
+ changeHp(scorpion,sonya)
 })
 
 arenas.appendChild(createPlayer('player1', scorpion))
